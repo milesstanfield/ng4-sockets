@@ -1,28 +1,30 @@
-# Ng4Chat
+npm install socket.io socket.io-client @types/socket.io-client --save
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+npm install nodemon concurrently --save-dev
 
-## Development server
+npm install express method-override compression --save-dev
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+ng eject && npm i
 
-## Code scaffolding
+// package.json
+"start": "tsc && concurrently \"npm run tsc:w\" \"nodemon ./server/index.js\" ",
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+ng g s chat -m app.module
 
-## Build
+// service.ts
+import * as io from 'socket.io-client';
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Running unit tests
+url: string = 'http://localhost:4200';
+socket: any;
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+this.socket = io(this.url);
+this.socket.emit('add-message', message);
 
-## Running end-to-end tests
+ng g c chat -m app-routing.module
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+// app-routing.module
+const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: '/chat' },
+  { path: '/chat', component: ChatComponent }
+];
