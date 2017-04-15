@@ -4,6 +4,8 @@ var path           = require('path');
 var compress       = require('compression');
 var app            = express();
 var port           = process.env.PORT || 3000;
+var http           = require('http').createServer(app);
+var io             = require('socket.io')(http);
 
 // gzip
 app.use(compress());
@@ -16,14 +18,18 @@ app.get('*', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/dist/index.html'));
 });
 
-
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
 // var socket = io.connect();
-
+// socket.emit('news', { hello: 'world' });
 io.on('connection', function (socket) {
   console.log('user connected');
-  // socket.emit('news', { hello: 'world' });
+
+  socket.on('disconnect', function() {
+    console.log('user disconnected');
+  });
+
+  socket.on('add-message', function(message) {
+    io.emit('message', { type: 'new-message', text: message });
+  });
 });
 
 http.listen(port, function() {
