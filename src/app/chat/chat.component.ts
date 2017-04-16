@@ -8,8 +8,8 @@ import { ChatService } from './../chat.service';
 })
 export class ChatComponent implements OnInit, OnDestroy {
   messages: Array<Object> = [];
-  connection: any;
   message: string;
+  connection: any;
 
   constructor(private chatService: ChatService) { }
 
@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.connection = this.chatService.getMessages().subscribe(message => {
       this.messages.push(message);
-    })
+    });
   }
 
   ngOnDestroy() {

@@ -18,8 +18,6 @@ app.get('*', function(req, res) {
   res.sendFile(path.resolve(__dirname + '/dist/index.html'));
 });
 
-// var socket = io.connect();
-// socket.emit('news', { hello: 'world' });
 io.on('connection', function (socket) {
   console.log('user connected');
 
@@ -28,7 +26,7 @@ io.on('connection', function (socket) {
   });
 
   socket.on('add-message', function(message) {
-    io.emit('message', { type: 'new-message', text: message });
+    io.emit('message', { text: message });
   });
 });
 
